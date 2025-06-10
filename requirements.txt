@@ -1,12 +1,9 @@
-streamlit>=1.30.0
-pandas
-numpy
-matplotlib
-seaborn
-plotly
-scikit-learn
-xgboost
-tensorflow
-statsmodels
-shap
-joblib
+streamlit==1.35.0
+pandas==2.2.2
+numpy==1.26.0  # Must be >=1.26.0 for pandas 2.2.2
+tensorflow-cpu==2.16.1  # Latest stable for Python 3.13
+matplotlib==3.8.0
+seaborn==0.13.2
+plotly==5.18.0
+scikit-learn==1.4.0
+xgboost==2.0.3
