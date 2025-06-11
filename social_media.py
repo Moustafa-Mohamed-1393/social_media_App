@@ -97,49 +97,47 @@ elif section == "Exploratory Analysis":
     st.title("Exploratory Data Analysis")
     
     tab1, tab2, tab3, tab4 = st.tabs(["Basic Stats", "Engagement Analysis", "Sentiment Analysis", "Geographic Analysis"])
-    
+
     with tab1:
-                st.header("📈 Basic Statistics", divider="rainbow")
-                
-                # Section 1: Correlation Analysis
-                st.subheader("🔍 Correlation Insights")
-                
-                col1, col2 = st.columns([2, 1])
-                
-                with col1:
-                    st.markdown("##### 🔗 Feature Correlation Heatmap")
-    with st.expander("About this visualization", expanded=True):
-        st.write("""
-            This heatmap shows how different metrics in your data relate to each other.
-            - Strong positive correlation (red): Metrics that increase together
-            - Strong negative correlation (blue): Metrics that move in opposite directions
-            """)
+        st.header("📈 Basic Statistics", divider="rainbow")  # Only this tab gets the rainbow divider
+    
+        # Section 1: Correlation Analysis
+        st.subheader("🔍 Correlation Insights")
+        
+        col1, col2 = st.columns([2, 1])
+        
+        with col1:
+            st.markdown("##### 🔗 Feature Correlation Heatmap")
+            with st.expander("About this visualization", expanded=True):
+                st.write("""
+                    This heatmap shows how different metrics in your data relate to each other.
+                    - Strong positive correlation (red): Metrics that increase together
+                    - Strong negative correlation (blue): Metrics that move in opposite directions
+                    """)
 
-        # Interactive controls
-        corr_threshold = st.slider(
-            "Minimum correlation to display:",
-            min_value=0.0,
-            max_value=1.0,
-            value=0.0,
-            help="Filter out weak correlations"
-        )
+                corr_threshold = st.slider(
+                    "Minimum correlation to display:",
+                    min_value=0.0,
+                    max_value=1.0,
+                    value=0.0,
+                    help="Filter out weak correlations"
+                )
 
-        # Calculate correlation matrix
-        corr_matrix = df.select_dtypes(include=['float64', 'int64']).corr()
-        mask = (abs(corr_matrix) >= corr_threshold) | (corr_matrix.isna())
+                corr_matrix = df.select_dtypes(include=['float64', 'int64']).corr()
+                mask = (abs(corr_matrix) >= corr_threshold) | (corr_matrix.isna())
 
-        plt.figure(figsize=(10, 8))
-        sns.heatmap(corr_matrix.where(mask), 
-                annot=True, 
-                cmap='coolwarm', 
-                fmt=".2f",
-                vmin=-1, 
-                vmax=1,
-                linewidths=0.5)
-        plt.title(f"Feature Correlations (|r| ≥ {corr_threshold})")
-        st.pyplot(plt)
+                plt.figure(figsize=(10, 8))
+                sns.heatmap(corr_matrix.where(mask), 
+                        annot=True, 
+                        cmap='coolwarm', 
+                        fmt=".2f",
+                        vmin=-1, 
+                        vmax=1,
+                        linewidths=0.5)
+                plt.title(f"Feature Correlations (|r| ≥ {corr_threshold})")
+                st.pyplot(plt)
 
-        # Sentiment Distribution section moved here
+        # Section 2: Sentiment Distribution (ONLY in Basic Stats)
         st.markdown("##### 😊 Sentiment Distribution")
         with st.expander("About this chart", expanded=True):
             st.write("""
@@ -190,7 +188,7 @@ elif section == "Exploratory Analysis":
         else:
             st.warning("Please select at least one brand")
 
-        # Quick stats cards
+        # Section 3: Quick Stats (ONLY in Basic Stats)
         if selected_brands and len(selected_brands) > 0:
             st.markdown("##### 📊 Quick Stats")
             pos_pct = (filtered_df['sentiment_label'] == 'Positive').mean() * 100
@@ -219,7 +217,6 @@ elif section == "Exploratory Analysis":
                     delta_color="inverse",
                     help="Percentage of negative posts"
                 )
-
     with tab2:
         st.header("📊 Engagement Analysis", divider="rainbow")
         
